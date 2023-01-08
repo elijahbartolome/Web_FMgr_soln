@@ -1,9 +1,12 @@
 <ul>
-    {% for file in files %}
+    {% for zipFile in zipFiles %}
     <li>
-        <a href="{{ (request.path + '/' if request.path != '/' else '') + file }}">
-            {{ (request.path + '/' if request.path != '/' else '') + file }}
+        <a href="{{ (request.path + '/' if request.path != '/' else '') + zipFile[0] }}">
+            {{ (request.path + '/' if request.path != '/' else '') + zipFile[0] }}
         </a>
+        {% if zipFile[1] %}
+            <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="/download/{{ (request.path + '/' if request.path != '/' else '') + zipFile[0] }}"> Download </a></p>
+        {% endif %}
     </li>
     {% endfor %}
 </ul>

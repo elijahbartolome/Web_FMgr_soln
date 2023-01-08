@@ -19,20 +19,29 @@ def root(req_path):
 
     # Check if path is a file and serve
     if os.path.isfile(abs_path):
-        return send_file(abs_path)
+        return downloadFile(abs_path)
 
     # Show directory contents
+    print("abs_path: " + abs_path)
     files = os.listdir(abs_path)
+    isFile = []
+    for file in files:
+        print(os.path.join(abs_path, file))
+        print(os.path.isfile(os.path.join(abs_path, file)))
+        isFile.append(os.path.isfile(os.path.join(abs_path, file)))
     print("Try to render html")
 
-    return render_template('index.html', files=files)
+    return render_template('index.html', zipFiles=zip(files, isFile))
 
 def directoryTree():
     pass
 def previewFile():
     pass
-def downloadFile():    
-    pass
+
+@app.route('/download', defaults={'req_path': ''}, methods=['GET', 'POST'])
+@app.route('/download/<path:req_path>', methods=['GET', 'POST'])
+def downloadFile(abs_path):  
+    return send_file(abs_path)
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', debug=True, threaded=True)
