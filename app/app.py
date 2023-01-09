@@ -1,10 +1,14 @@
+from ast import Or
 from flask import Flask, render_template_string, render_template, send_file, abort
 import os
+from collections import OrderedDict
+
 app = Flask(__name__)
 
 BASE_DIR = '/usr/src/app/web_hw_files'
 
 # root webpage
+'''
 @app.route('/', defaults={'req_path': ''})
 @app.route('/<path:req_path>')
 def root(req_path):
@@ -32,9 +36,43 @@ def root(req_path):
     print("Try to render html")
 
     return render_template('index.html', zipFiles=zip(files, isFile))
+'''
 
-def directoryTree():
-    pass
+@app.route('/')
+def root():
+    html = directoryTree(BASE_DIR=BASE_DIR)
+
+    return render_template('index.html', htmlTree=html)
+
+def directoryTree(BASE_DIR):
+    html = '<div id="myDIV">'
+    currLevel = 0
+    for root, dirs, files in os.walk(BASE_DIR, topdown=True):
+        level = root.replace(BASE_DIR, '').count(os.sep)
+        if level > currLevel:
+            currLevel = level
+            html += '<div id="myDIV">'
+        elif level < currLevel:
+            while level < currLevel:
+                html += '</div>'
+                currLevel -= 1
+        indent = '&nbsp;' * 4 * level
+        if len(files) == 0:
+            html += '<div id="myDIV">' + '{}{}'.format(indent, os.path.basename(root)) + '</div>'
+        else:
+            html += '{}{}'.format(indent, os.path.basename(root))
+            subindent = '&nbsp;' * 4 * (level + 1)
+            for f in files:
+                html += '<p>' + '{}{}'.format(subindent, f) 
+                html += '<a href="/download/{{{{ root }}}}"> Download </a>'
+                html += '</p>'
+
+    if level < currLevel:
+        while level < currLevel:
+            html += '</div>'
+            currLevel -= 1
+    return html
+
 def previewFile():
     pass
 

@@ -1,12 +1,12 @@
-<ul>
-    {% for zipFile in zipFiles %}
-    <li>
-        <a href="{{ (request.path + '/' if request.path != '/' else '') + zipFile[0] }}">
-            {{ (request.path + '/' if request.path != '/' else '') + zipFile[0] }}
-        </a>
-        {% if zipFile[1] %}
-            <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="/download/{{ (request.path + '/' if request.path != '/' else '') + zipFile[0] }}"> Download </a></p>
-        {% endif %}
-    </li>
-    {% endfor %}
-</ul>
+{{ htmlTree|safe }}
+
+<script>
+    function myFunction() {
+      var x = document.getElementById("myDIV");
+      if (x.style.display === "none") {
+        x.style.display = "block";
+      } else {
+        x.style.display = "none";
+      }
+    }
+</script>
