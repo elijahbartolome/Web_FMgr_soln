@@ -48,6 +48,7 @@ def directoryTree(BASE_DIR):
     html = '<div id="myDIV">'
     currLevel = 0
     for root, dirs, files in os.walk(BASE_DIR, topdown=True):
+        print(root)
         level = root.replace(BASE_DIR, '').count(os.sep)
         if level > currLevel:
             currLevel = level
@@ -64,7 +65,7 @@ def directoryTree(BASE_DIR):
             subindent = '&nbsp;' * 4 * (level + 1)
             for f in files:
                 html += '<p>' + '{}{}'.format(subindent, f) 
-                html += '<a href="/download/{{{{ root }}}}"> Download </a>'
+                html += '<a href="/download/{}/{}"> Download </a>'.format(root, f)
                 html += '</p>'
 
     if level < currLevel:
@@ -78,8 +79,8 @@ def previewFile():
 
 @app.route('/download', defaults={'req_path': ''}, methods=['GET', 'POST'])
 @app.route('/download/<path:req_path>', methods=['GET', 'POST'])
-def downloadFile(abs_path):  
-    return send_file(abs_path)
+def downloadFile(req_path):  
+    return send_file('/' + req_path)
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', debug=True, threaded=True)
