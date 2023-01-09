@@ -11,6 +11,7 @@ WORKDIR /app
 
 COPY requirements.txt /app
 COPY templates /app/templates
+COPY font-awesome.min.css /app/static/stylesheets/font-awesome.min.css
 
 RUN python -m pip install --upgrade pip
 RUN pip install --trusted-host pypi.org --trusted-host pypi.python.org --trusted-host=files.pythonhosted.org --no-cache-dir -r requirements.txt
