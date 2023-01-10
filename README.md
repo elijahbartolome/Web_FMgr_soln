@@ -9,3 +9,10 @@ In order to set up the Docker containers and application, do the following:
 3. Run `docker-compose up -d` in root directory (which should contain `docker-compose.yml`)
 
 4. Go to [localhost:5000](localhost:5000) on a web browser
+
+## How to use
+* Click on a red folder to expand/collapse branches
+
+* Click on a green file to preview contents. The preview will be in a panel at the top of the page
+
+* Click on Download next to a green file to download the file

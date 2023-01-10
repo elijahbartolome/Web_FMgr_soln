@@ -42,15 +42,20 @@
 </head>
 
 <body>
+    <!--Gets HTML for displaying directory tree from Python function-->
     {{ htmlTree|safe }}
     <script type="text/javascript" src="/download//app/templates/jquery.js"></script>
     <script>
+        // Escapes HTML in a text file. 
+        // The preview will then display the raw text instead of rendering HTML.
+        // Good for preventing HTML injection.
         function escapeHtml(html){
             var text = document.createTextNode(html);
             var p = document.createElement('p');
             p.appendChild(text);
             return p.innerHTML;
         }
+        // Displays the preview of the file
         function displayIframe(id) {
             $.ajax({
                 url:`/download/${id}`,
@@ -73,6 +78,7 @@
             });
 
         }
+        // Function for expanding/collapsing directory branches
         var hierarchy = document.getElementById("hierarchy");
         hierarchy.addEventListener("click", function(event){
             var elem = event.target;
