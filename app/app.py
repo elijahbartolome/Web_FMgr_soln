@@ -15,7 +15,8 @@ def root():
     return render_template('index.html', htmlTree=html)
 
 def directoryTree(BASE_DIR):
-    html = '<div id="hierarchy">'
+    html = '<div id="iframe", style="border:1px solid black"></div>'
+    html += '<div id="hierarchy">'
     currLevel = 0
     for root, dirs, files in os.walk(BASE_DIR, topdown=True):
         html += '<div class="foldercontainer">' 
@@ -35,7 +36,7 @@ def directoryTree(BASE_DIR):
         else:
             html += '<span class="folder fa-folder-o" data-isexpanded="true">{}</span>'.format(os.path.basename(root))
             for f in files:
-                html += '<span class="file">{}'.format(f) 
+                html += '<span class="file" id="/{}/{}">{}'.format(root, f, f) 
                 html += '<a href="/download/{}/{}"> Download </a>'.format(root, f)
                 html += '</span>'
             if len(dirs) == 0:
@@ -48,6 +49,8 @@ def directoryTree(BASE_DIR):
     html += '</div>'
     return html
 
+@app.route('/preview', defaults={'req_path': ''}, methods=['GET', 'POST'])
+@app.route('/preview/<path:req_path>', methods=['GET', 'POST'])
 def previewFile():
     pass
 

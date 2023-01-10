@@ -43,7 +43,36 @@
 
 <body>
     {{ htmlTree|safe }}
+    <script type="text/javascript" src="/download//app/templates/jquery.js"></script>
     <script>
+        function escapeHtml(html){
+            var text = document.createTextNode(html);
+            var p = document.createElement('p');
+            p.appendChild(text);
+            return p.innerHTML;
+        }
+        function displayIframe(id) {
+            $.ajax({
+                url:`/download/${id}`,
+                success: function (data){
+                    var rawText = escapeHtml(data)
+                    const lines = rawText.split('\n', 10);
+                    console.log(lines);
+                    let output = "<p>";
+                    
+                    lines.forEach(function (item, index) {
+                        output = output.concat(item);
+                        console.log("Item:" + item)
+                        console.log("Output: " + output);
+                    });
+                    
+                    output = output.concat("</p>");
+                    console.log("Final output:" + output);
+                    document.getElementById("iframe").innerHTML = output;
+                }
+            });
+
+        }
         var hierarchy = document.getElementById("hierarchy");
         hierarchy.addEventListener("click", function(event){
             var elem = event.target;
@@ -52,7 +81,7 @@
                 var type = elem.classList.contains("folder") ? "folder" : "file";
                 if(type=="file")
                 {
-                    alert("File accessed");
+                    displayIframe(elem.id)
                 }
                 if(type=="folder")
                 {
